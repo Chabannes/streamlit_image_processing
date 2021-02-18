@@ -3,9 +3,9 @@
 
 import numpy as np
 from numpy import expand_dims
-# from keras.models import load_model
-# from keras.preprocessing.image import load_img
-# from keras.preprocessing.image import img_to_array
+from keras.models import load_model
+from keras.preprocessing.image import load_img
+from keras.preprocessing.image import img_to_array
 from matplotlib import pyplot
 from matplotlib.patches import Rectangle
 import streamlit as st
