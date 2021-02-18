@@ -43,7 +43,7 @@ def main():
 
     st.subheader('Upload your image')
     st.text('Welcome! This is a simple image processing app using Streamlit and Heroku.')
-    st.text('Your image must be in a 220x220 png format.\nYou can find such pictures at https://github.com/Chabannes/streamlit_image_processing/data')
+    st.text('Your image must be in a 220x220 png format.You can find such pictures at: \nhttps://github.com/Chabannes/streamlit_image_processing/tree/master/data')
     uploaded_file = st.file_uploader("Choose an image...", type="png")
     if uploaded_file is not None:
 
