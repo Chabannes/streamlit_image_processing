@@ -90,7 +90,7 @@ def main():
                 st.text('You have to choose the K value in the Kmeans clustering algorithm. In other words, you \nset '
                         'the new number of colors that the initial %s different colors will be reduced to.' %(ori_img_n_colors))
 
-                n_clusters = st.slider('How Many Colors ? ', 1, 80)
+                n_clusters = st.slider('How many colors ? ', 1, 80)
 
                 # KMEANS CLUSTERING
 
@@ -218,7 +218,7 @@ def main():
 
                 cum_var_df, res, pca = load()
 
-                n_components = st.slider('How Many Principal Components ? ', 2, 100)
+                n_components = st.slider('How many Principal Components ? ', 2, 100)
                 temp_res = []
                 for channel in range(3):
                     pca_channel = res[channel]
@@ -320,7 +320,7 @@ def main():
                 detection(ori_img, model, anchors, class_threshold, image_size)
             except:
                 st.text("Can't import the model needed for object detection. The model can't be loaded if \nyou are"
-                        " running this app using a public URL (too heavy)")
+                        " running this app using a public URL (too heavy).")
 
 
 
