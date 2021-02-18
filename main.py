@@ -42,6 +42,8 @@ def main():
     # LOAD ORIGINAL IMAGE
 
     st.subheader('Upload your image')
+    st.text('Welcome! This is a simple image processing app using Streamlit and Heroku.')
+    st.text('Your image must be in a 200x200 png format.\nYou can find such pictures at https://github.com/Chabannes/streamlit_image_processing')
     uploaded_file = st.file_uploader("Choose an image...", type="png")
     if uploaded_file is not None:
 
@@ -61,9 +63,17 @@ def main():
         st.image(ori_img, caption='Original Image', use_column_width=True)
 
         st.title("Choose the task you want to perform")
+        st.text('You can either apply a compression to your image or perform object detection. The yolo \nmodel used for object'
+                'detection being too heavy for Github, this functionality is not \navailable if you are using a public URL to run this app.')
         task = st.selectbox('Task to perform', ('', 'Apply Compression', 'Perform Object Detection'))
 
         if task == 'Apply Compression':
+
+            st.header('Two types of compression are available\n')
+            st.subheader('The color based reduction:')
+            st.text('The image you uploaded contains %s different colors. The idea is to reduce the number \nof colors using'
+                    'Kmeans clustering. Each of the %s different colors will be assigned \nto the closest color among the k '
+                    'new colors, reducing drastically the new image size.' %(ori_img_n_colors, ori_img_n_colors))
 
             st.header('Choose your compression type')
             comp_type = st.selectbox('Compression Type', ('', 'Color Reduced', 'Principal Component Reduced'))
@@ -71,6 +81,9 @@ def main():
             st.subheader(comp_type)
 
             if comp_type == 'Color Reduced':
+
+                st.text('You have to choose the K value in the Kmeans clustering algorithm. In other words, you \nset '
+                        'the new number of colors that the initial %s different colors will be reduced to.' %(ori_img_n_colors))
 
                 n_clusters = st.slider('How Many Colors ? ', 1, 80)
 
@@ -94,7 +107,8 @@ def main():
                 BCSS = calculateBCSS(X, kmeans)
                 exp_var = 100 * BCSS / (WCSS + BCSS)
 
-                st.subheader("Image Size: {:.3f} KB".format(imageByteSize(new_pixels)))
+                st.subheader("Image Size: {:.2f} KB / Initially {:.2f} KB".format(imageByteSize(new_pixels), ori_img_size))
+                st.subheader("Number of Colors: %s / Initially %s" %(n_clusters, ori_img_n_colors))
                 st.subheader("Explained Variance: {:.3f}%".format(exp_var))
 
                 fig = plt.figure()
@@ -102,6 +116,9 @@ def main():
                 ax.imshow(np.array(new_pixels / 255).reshape(*new_pixels.shape))
                 ax.axis('off')
                 st.write(fig)
+
+                st.text('You can also display the evolution of the compression with the number of colors but\nthis is a '
+                        'very time consuming computation.')
 
                 show_color_evol = st.button("Display the evolution of compression with the number of colors")
                 if show_color_evol:
@@ -196,6 +213,10 @@ def main():
 
                 cum_var_df, res, pca = load()
 
+                st.text('For a Principal Components compression, the idea is to switch to a new orthogonal \nbasis. The '
+                        'first component of this new basis is the one explaining the most variance \nin the data. The '
+                        'more components, the more variance (i.e. information) get restored from \nthe original data.')
+
                 n_components = st.slider('How Many Principal Components ? ', 2, 100)
                 temp_res = []
                 for channel in range(3):
@@ -209,14 +230,20 @@ def main():
 
                 pca_comp_size = imageByteSize(compressed_image)
                 exp_var_pca = cum_var_df["Explained Variance"][n_components]
-                st.subheader("Image Size: {:.3f} KB".format(pca_comp_size))
-                st.subheader("Explained Variance: {:.3f}%".format(exp_var_pca))
+
+                # st.subheader("Image Size: {:.2f} KB / Initially {:.2f} KB".format(imageByteSize(new_pixels), ori_img_size))
+
+                st.subheader("Image Size: {:.2f} KB / Initially {:.2f} KB".format(pca_comp_size, ori_img_size))
+                st.subheader("Explained Variance: {:.2f}%".format(exp_var_pca))
 
                 fig = plt.figure()
                 ax = fig.add_subplot(1, 1, 1)
                 ax.imshow(np.array(compressed_image / 255).reshape(*compressed_image.shape))
                 ax.axis('off')
                 st.write(fig)
+
+                st.text('You can also display the evolution of the compression with the number of principal \n'
+                        'components but this is a very time consuming computation.')
 
                 show_comp_evol = st.button("Display the evolution of compression with the number of components")
                 if show_comp_evol:
