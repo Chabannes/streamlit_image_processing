@@ -73,7 +73,12 @@ def main():
             st.subheader('The color based reduction:')
             st.text('The image you uploaded contains %s different colors. The idea is to reduce the number \nof colors using'
                     'Kmeans clustering. Each of the %s different colors will be assigned \nto the closest color among the k '
-                    'new colors, reducing drastically the new image size.' %(ori_img_n_colors, ori_img_n_colors))
+                    'new colors, reducing drastically the new image size.\n' %(ori_img_n_colors, ori_img_n_colors))
+
+            st.subheader('The Principal Components based reduction:')
+            st.text('For a Principal Components compression, the idea is to switch to a new orthogonal \nbasis. The '
+                    'first component of this new basis is the one explaining the most variance \nin the data. The '
+                    'more components, the more variance (i.e. information) get restored from \nthe original data.')
 
             st.header('Choose your compression type')
             comp_type = st.selectbox('Compression Type', ('', 'Color Reduced', 'Principal Component Reduced'))
@@ -212,10 +217,6 @@ def main():
                     return cum_var_df, res, pca
 
                 cum_var_df, res, pca = load()
-
-                st.text('For a Principal Components compression, the idea is to switch to a new orthogonal \nbasis. The '
-                        'first component of this new basis is the one explaining the most variance \nin the data. The '
-                        'more components, the more variance (i.e. information) get restored from \nthe original data.')
 
                 n_components = st.slider('How Many Principal Components ? ', 2, 100)
                 temp_res = []
