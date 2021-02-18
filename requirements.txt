@@ -7,3 +7,4 @@ scikit-learn>=0.18
 keras==2.4.3
 Pillow>=8.0
 streamlit==0.76.0
+tensorflow>=2.2
