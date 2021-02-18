@@ -43,7 +43,7 @@ def main():
 
     st.subheader('Upload your image')
     st.text('Welcome! This is a simple image processing app using Streamlit and Heroku.')
-    st.text('Your image must be in a 200x200 png format.\nYou can find such pictures at https://github.com/Chabannes/streamlit_image_processing')
+    st.text('Your image must be in a 200x200 png format.\nYou can find such pictures at https://github.com/Chabannes/streamlit_image_processing/data')
     uploaded_file = st.file_uploader("Choose an image...", type="png")
     if uploaded_file is not None:
 
@@ -310,21 +310,18 @@ def main():
                     st.write(fig)
 
         if task == 'Perform Object Detection':
-            model = load_model('yolo.h5')
 
-            class_threshold = st.slider('Level of confidence', 0.1, 0.9)
-            image_size = 416, 416  # expected input shape for the model
-            anchors = [[116, 90, 156, 198, 373, 326], [30, 61, 62, 45, 59, 119], [10, 13, 16, 30, 33, 23]]
-            detection(ori_img, model, anchors, class_threshold, image_size)
+            try:
+                model = load_model('yolo.h5')
 
-            # st.subheader('Choose the level of confidence')
-            # # class_threshold = st.slider('Level of confidence', 0.1, 0.9)
-            # class_threshold = st.selectbox('thr', ('', 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9))
-            #
-            # if class_threshold != '':
-            #     image_size = 416, 416  # expected input shape for the model
-            #     anchors = [[116, 90, 156, 198, 373, 326], [30, 61, 62, 45, 59, 119], [10, 13, 16, 30, 33, 23]]
-            #     detection(ori_img, model, anchors, class_threshold, image_size)
+                class_threshold = st.slider('Level of confidence', 0.1, 0.9)
+                image_size = 416, 416  # expected input shape for the model
+                anchors = [[116, 90, 156, 198, 373, 326], [30, 61, 62, 45, 59, 119], [10, 13, 16, 30, 33, 23]]
+                detection(ori_img, model, anchors, class_threshold, image_size)
+            except:
+                st.text("Can't import the model needed for object detection. The model can't be loaded if \nyou are"
+                        " running this app using a public URL (too heavy)")
+
 
 
 def imageByteSize(img):
