@@ -1,5 +1,6 @@
 numpy==1.19.2
 h5py==2.10.0
+webcolors>=1.11.0
 cython>=0.29.0
 pandas>=0.21.0
 seaborn==0.9.0
